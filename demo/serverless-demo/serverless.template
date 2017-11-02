@@ -1,0 +1,123 @@
+{
+  "Description": "Employees service.",
+  "Parameters" : {
+    "EmployeesBucketName" : {
+        "Type" : "String",
+        "Description" : "Name of S3 bucket used to store the employees photos.",
+        "MinLength" : "0"
+    },
+    "DatabaseServer": {
+    	"Type" : "String",
+     	"Description" : "database server name or ip",
+      	"MinLength" : "3"
+    },
+    "DatabasePort": {
+      	"Type" : "Number",
+       	"Default" : "3306",
+        "Description" : "database server port"
+    },
+    "DatabaseName":{
+      	"Type" : "String",
+        "Default" : "employees",
+        "Description" : "database name",
+        "MinLength" : "2"
+    },
+    "DatabaseUser": {
+      	"Type" : "String",
+       	"Description" : "username used to connect to database",
+        "MinLength" : "1"
+    },
+    "DatabasePassword": {
+      	"Type" : "String",
+       	"Description" : "password used to connect to database"
+    }
+  },
+  "Conditions" : {
+    "CreateEmployeesBucket" : {"Fn::Equals" : [{"Ref" : "EmployeesBucketName"}, ""]}
+  },
+  "Resources": {
+    "GetEmployees": {
+      "Type": "AWS::Serverless::Function",
+      "Properties": {
+        "Handler": "net.codegardener.employees.function.GetEmployees",
+        "Runtime" : "java8",
+        "CodeUri" : "./target/serverless-1.0.0.jar",
+        "Policies": [
+      		"AWSLambdaFullAccess",
+        	"AWSLambdaBasicExecutionRole",
+         	"AWSLambdaVPCAccessExecutionRole"
+        ],
+        "Environment" : {
+          "Variables" : {
+            "EMPLOYEES_BUCKET_NAME" : { "Fn::If" : ["CreateEmployeesBucket", {"Ref":"EmployeesBucket"}, { "Ref" : "EmployeesBucketName" } ] },
+            "DB_SRV" : { "Ref": "DatabaseServer" },
+			"DB_PORT" : { "Ref": "DatabasePort" },
+			"DB_NAME" : { "Ref": "DatabaseName" },
+			"DB_USR" : { "Ref": "DatabaseUser" },
+			"DB_PWD" : { "Ref": "DatabasePassword" }
+          }
+        },
+        "Events": {
+          "GetResource": {
+            "Type": "Api",
+            "Properties": {
+              "Path": "employees",
+              "Method": "get"
+            }
+          }
+        },
+        "VpcConfig" : {
+          "SecurityGroupIds" : [ "sg-0224a47d" ],
+          "SubnetIds" : [ "subnet-ce3676ab", "subnet-0ab4bb27"]
+        }
+      }
+    },
+    "GetEmployeeById": {
+      "Type": "AWS::Serverless::Function",
+      "Properties": {
+        "Handler": "net.codegardener.employees.function.GetEmployeeById",
+        "Runtime" : "java8",
+        "CodeUri" : "./target/serverless-1.0.0.jar",
+        "Policies": [
+      		"AWSLambdaFullAccess",
+        	"AWSLambdaBasicExecutionRole",
+         	"AWSLambdaVPCAccessExecutionRole"
+        ],
+        "Environment" : {
+          "Variables" : {
+            "EMPLOYEES_BUCKET_NAME" : { "Fn::If" : ["CreateEmployeesBucket", {"Ref":"EmployeesBucket"}, { "Ref" : "EmployeesBucketName" } ] },
+            "DB_SRV" : { "Ref": "DatabaseServer" },
+			"DB_PORT" : { "Ref": "DatabasePort" },
+			"DB_NAME" : { "Ref": "DatabaseName" },
+			"DB_USR" : { "Ref": "DatabaseUser" },
+			"DB_PWD" : { "Ref": "DatabasePassword" }
+          }
+        },
+        "Events": {
+          "GetResource": {
+            "Type": "Api",
+            "Properties": {
+              "Path": "employees/{id}",
+              "Method": "get"
+            }
+          }
+        },
+        "VpcConfig" : {
+          "SecurityGroupIds" : [ "sg-0224a47d" ],
+          "SubnetIds" : [ "subnet-ce3676ab", "subnet-0ab4bb27"]
+        }
+      }
+    },
+    "EmployeesBucket": {
+      "Type": "AWS::S3::Bucket",
+      "Condition" : "CreateEmployeesBucket",
+      "Properties": {
+      }
+    }
+  },
+  "Outputs" : {
+    "EmployeesBucket" : {
+      "Value" : { "Fn::If" : ["CreateEmployeesBucket", {"Ref":"EmployeesBucket"}, { "Ref" : "EmployeesBucketName" } ] }
+    }
+  }
+}
