@@ -1,0 +1,55 @@
+<h1>Delete</h1>
+
+<h2>Are you sure you want to delete this record?</h2>
+
+<form (ngSubmit)="onSubmit()">
+
+    <div class="row">
+        <div class="form-group col">
+            <label for="first-name">First Name</label>
+            <input type="text" class="form-control" id="first-name" [value]="employee?.firstName" disabled="disabled">
+        </div>
+
+        <div class="form-group col">
+            <label for="last-name">Last Name</label>
+            <input type="text" class="form-control" id="last-name" [value]="employee?.lastName" disabled="disabled">
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="form-group col">
+            <label for="birth-date">Birth Date</label>
+            <input type="text" class="form-control" id="birth-date" [value]="employee?.birthDate | date: 'longDate'" disabled="disabled">
+        </div>
+
+        <div class="form-group col">
+            <label for="gender">Gender</label>
+            <select class="form-control" disabled="disabled" [value]="employee?.gender">
+            <option value=""></option>
+            <option value="M">Male</option>
+            <option value="F">Female</option>
+          </select>
+        </div>
+
+        <div class="form-group col">
+            <label for="hire-date">Hire Date</label>
+            <input type="text" class="form-control" id="hire-date" [value]="employee?.hireDate | date: 'longDate'" disabled="disabled">
+        </div>
+    </div>
+
+    <div class="row" *ngIf="error">
+      <div class="col">
+        <div class="alert alert-danger" role="alert">
+            something went wrong please try again later :(
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col text-right">
+          <button type="submit" class="btn btn-danger">Yes, Delete</button>
+          <button type="reset" class="btn btn-secondary" [routerLink]="['/list']">No, Cancel</button>
+      </div>
+    </div>
+</form>
