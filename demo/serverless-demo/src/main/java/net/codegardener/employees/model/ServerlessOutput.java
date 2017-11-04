@@ -1,11 +1,18 @@
 package net.codegardener.employees.model;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class ServerlessOutput {
 	private Integer statusCode;
 	private Map<String, String> headers;
 	private String body;
+	
+	public ServerlessOutput() {
+		Map<String, String> headers = new HashMap<String, String>();
+		headers.put("Access-Control-Allow-Origin", "*");
+		this.setHeaders(headers);
+	}
 
 	public Integer getStatusCode() {
 		return statusCode;

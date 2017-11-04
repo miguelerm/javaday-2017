@@ -110,6 +110,78 @@
         }
       }
     },
+    "UpdateEmployee": {
+      "Type": "AWS::Serverless::Function",
+      "Properties": {
+        "Handler": "net.codegardener.employees.function.UpdateEmployee",
+        "Runtime" : "java8",
+        "CodeUri" : "./target/serverless-1.0.0.jar",
+        "Policies": [
+      		"AWSLambdaFullAccess",
+        	"AWSLambdaBasicExecutionRole",
+         	"AWSLambdaVPCAccessExecutionRole"
+        ],
+        "Environment" : {
+          "Variables" : {
+            "EMPLOYEES_BUCKET_NAME" : { "Fn::If" : ["CreateEmployeesBucket", {"Ref":"EmployeesBucket"}, { "Ref" : "EmployeesBucketName" } ] },
+            "DB_SRV" : { "Ref": "DatabaseServer" },
+			"DB_PORT" : { "Ref": "DatabasePort" },
+			"DB_NAME" : { "Ref": "DatabaseName" },
+			"DB_USR" : { "Ref": "DatabaseUser" },
+			"DB_PWD" : { "Ref": "DatabasePassword" }
+          }
+        },
+        "Events": {
+          "GetResource": {
+            "Type": "Api",
+            "Properties": {
+              "Path": "employees/{id}",
+              "Method": "put"
+            }
+          }
+        },
+        "VpcConfig" : {
+          "SecurityGroupIds" : [ "sg-0224a47d" ],
+          "SubnetIds" : [ "subnet-ce3676ab", "subnet-0ab4bb27"]
+        }
+      }
+    },
+    "DeleteEmployee": {
+      "Type": "AWS::Serverless::Function",
+      "Properties": {
+        "Handler": "net.codegardener.employees.function.DeleteEmployee",
+        "Runtime" : "java8",
+        "CodeUri" : "./target/serverless-1.0.0.jar",
+        "Policies": [
+      		"AWSLambdaFullAccess",
+        	"AWSLambdaBasicExecutionRole",
+         	"AWSLambdaVPCAccessExecutionRole"
+        ],
+        "Environment" : {
+          "Variables" : {
+            "EMPLOYEES_BUCKET_NAME" : { "Fn::If" : ["CreateEmployeesBucket", {"Ref":"EmployeesBucket"}, { "Ref" : "EmployeesBucketName" } ] },
+            "DB_SRV" : { "Ref": "DatabaseServer" },
+			"DB_PORT" : { "Ref": "DatabasePort" },
+			"DB_NAME" : { "Ref": "DatabaseName" },
+			"DB_USR" : { "Ref": "DatabaseUser" },
+			"DB_PWD" : { "Ref": "DatabasePassword" }
+          }
+        },
+        "Events": {
+          "GetResource": {
+            "Type": "Api",
+            "Properties": {
+              "Path": "employees/{id}",
+              "Method": "delete"
+            }
+          }
+        },
+        "VpcConfig" : {
+          "SecurityGroupIds" : [ "sg-0224a47d" ],
+          "SubnetIds" : [ "subnet-ce3676ab", "subnet-0ab4bb27"]
+        }
+      }
+    },
     "EmployeesBucket": {
       "Type": "AWS::S3::Bucket",
       "Condition" : "CreateEmployeesBucket",

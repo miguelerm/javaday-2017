@@ -1,6 +1,7 @@
 package net.codegardener.employees.repository;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -96,9 +97,51 @@ public class EmployeesRepository {
 		return employee;
 	}
 
+	public Boolean delete(String id) throws SQLException {
+		Connection conn = getConnection();
+		PreparedStatement stmt = getDeleteStatement(conn, id);
+		int recordsDeleted = stmt.executeUpdate();
+		stmt.close();
+		conn.close();
+		
+		return recordsDeleted > 0;
+	}
+	
+	public Boolean update(Employee employee) throws SQLException {
+		
+		Connection conn = getConnection();
+		PreparedStatement stmt = getUpdateStatement(conn, employee);
+		int recordsUpdated = stmt.executeUpdate();
+		stmt.close();
+		conn.close();
+		
+		return recordsUpdated > 0;
+	}
+
+	private static PreparedStatement getUpdateStatement(Connection conn, Employee employee) throws SQLException {
+		PreparedStatement stmt = conn.prepareStatement(
+				"update employees set birth_date = ?, first_name = ?, last_name = ?, gender = ?, hire_date = ? where emp_no = ?");
+
+		stmt.setDate(1, new Date(employee.getBirthDate().getTime()));
+		stmt.setString(2, employee.getFirstName());
+		stmt.setString(3, employee.getLastName());
+		stmt.setString(4, employee.getGender());
+		stmt.setDate(5, new Date(employee.getHireDate().getTime()));
+		stmt.setString(6, employee.getId());
+		return stmt;
+	}
+	
+	
 	private static PreparedStatement getSelectSingleStatement(Connection conn, String id) throws SQLException {
 		PreparedStatement stmt = conn.prepareStatement(
 				"select emp_no, birth_date, first_name, last_name, gender, hire_date from employees where emp_no = ? limit 1");
+
+		stmt.setString(1, id);
+		return stmt;
+	}
+	
+	private static PreparedStatement getDeleteStatement(Connection conn, String id) throws SQLException {
+		PreparedStatement stmt = conn.prepareStatement("delete from employees where emp_no = ?");
 
 		stmt.setString(1, id);
 		return stmt;
@@ -153,5 +196,9 @@ public class EmployeesRepository {
 		employee.setFullName(rs.getString("full_name"));
 		return employee;
 	}
-	
+
+
+
+
+
 }

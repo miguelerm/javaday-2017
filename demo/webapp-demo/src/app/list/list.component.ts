@@ -16,8 +16,7 @@ export class ListComponent implements OnInit {
   public isLastPage: boolean;
   public pagesCount: number;
   public pages: number[];
-
-  private currentPage: number;
+  public currentPage: number;
 
   constructor(
     private employeesService: EmployeesService,

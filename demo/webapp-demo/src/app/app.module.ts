@@ -13,6 +13,8 @@ import { DetailsComponent } from './details/details.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { DeleteComponent } from './delete/delete.component';
 
+import { NgDatepickerModule } from 'ng2-datepicker';
+
 const appRoutes: Routes = [
   { path: 'list', component: ListComponent },
   { path: 'details/:id', component: DetailsComponent },
@@ -37,7 +39,8 @@ const appRoutes: Routes = [
     ),
     BrowserModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    NgDatepickerModule
   ],
   providers: [DatePipe, EmployeesService],
   bootstrap: [AppComponent]
