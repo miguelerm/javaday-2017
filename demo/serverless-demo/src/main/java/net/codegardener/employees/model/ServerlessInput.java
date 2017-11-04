@@ -70,6 +70,10 @@ public class ServerlessInput {
 	public Map<String, String> getQueryStringParameters() {
 		return queryStringParameters;
 	}
+	
+	public String getQueryStringParameter(String key) {
+		return this.queryStringParameters != null ? this.queryStringParameters.get(key) : null;
+	}
 
 	public void setQueryStringParameters(Map<String, String> queryStringParameters) {
 		this.queryStringParameters = queryStringParameters;

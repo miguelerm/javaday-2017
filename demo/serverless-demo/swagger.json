@@ -1,0 +1,140 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0",
+    "title": "serverless-demo-stack"
+  },
+  "host": "1v0kczzly0.execute-api.us-east-1.amazonaws.com",
+  "basePath": "/Prod",
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/employees": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "x-amazon-apigateway-integration": {
+        	"type": "mock",
+        	"requestTemplates": {
+        		"application/json": "{ \"statusCode\": 200 }"
+        	},
+        	"responses": {
+        		"default": {
+        			"default": "200",
+        			"responseParameters": {
+        				"method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'",
+        				"method.response.header.Access-Control-Allow-Methods": "'*'",
+              			"method.response.header.Access-Control-Allow-Origin": "'*'"
+        			},
+        			"responseTemplates": {
+        				"application/json": "{}"
+        			}
+        		}
+        	}
+		},
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/employees/{id}": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "x-amazon-apigateway-integration": {
+        	"type": "mock",
+        	"requestTemplates": {
+        		"application/json": "{ \"statusCode\": 200 }"
+        	},
+        	"responses": {
+        		"default": {
+        			"default": "200",
+        			"responseParameters": {
+        				"method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'",
+        				"method.response.header.Access-Control-Allow-Methods": "'*'",
+              			"method.response.header.Access-Control-Allow-Origin": "'*'"
+        			},
+        			"responseTemplates": {
+        				"application/json": "{}"
+        			}
+        		}
+        	}
+		},
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

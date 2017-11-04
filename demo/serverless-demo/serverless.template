@@ -29,7 +29,7 @@
     },
     "DatabasePassword": {
         "Type" : "String",
-        "Description" : "password used to connect to database",
+        "Description" : "password used to connect to database.",
         "NoEcho": "true",
         "MinLength" : "1"
     }

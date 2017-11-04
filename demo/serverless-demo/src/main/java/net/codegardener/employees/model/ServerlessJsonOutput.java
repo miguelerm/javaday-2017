@@ -20,6 +20,8 @@ public class ServerlessJsonOutput extends ServerlessOutput {
 	private void setJsonHeaders() {
 		Map<String, String> headers = new HashMap<String, String>();
 		headers.put("Content-Type", "application/json");
+		headers.put("Access-Control-Allow-Origin", "*");
+		this.setHeaders(headers);
 	}
 
 	private void setJsonBody(Object data) {
